@@ -1,0 +1,58 @@
+{
+  "name": "part6",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "part6/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/part6",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "part6/src/main.ts",
+        "tsConfig": "part6/tsconfig.app.json",
+        "assets": ["part6/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "part6:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "part6:build:development"
+        },
+        "production": {
+          "buildTarget": "part6:build:production"
+        }
+      }
+    }
+  }
+}
