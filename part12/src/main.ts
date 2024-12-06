@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-const inputFolder = 'part11/__input__';
+const inputFolder = 'part12/__input__';
 const file = fs.readFileSync(`${inputFolder}/test.txt`, 'utf-8');
 
 const lines = file.split('\n');
@@ -34,16 +34,61 @@ function printGrid(grid: string[][]) {
 const visited = new Map<string, boolean>();
 let blockingPositions = 0;
 
-function getRightOfCurrent() {
-  if (nextStepY === -1) {
-    return grid[currentY][currentX + 1];
-  } else if (nextStepX === 1) {
-    return grid[currentY + 1][currentX];
-  } else if (nextStepY === 1) {
-    return grid[currentY][currentX - 1];
-  } else if (nextStepX === -1) {
-    return grid[currentY - 1][currentX];
+function wouldWeLoopIfWePutUpABlock(originalX: number, originalY: number) {
+  const originalNextStepX = nextStepX;
+  const originalNextStepY = nextStepY;
+  // let firstLoop = true;
+  // const blockedVisited = new Map<string, boolean>(visited);
+
+  while (
+    currentX + nextStepX >= 0 &&
+    currentX + nextStepX < grid[0].length &&
+    currentY + nextStepY >= 0 &&
+    currentY + nextStepY < grid.length
+  ) {
+    while (grid[currentY + nextStepY][currentX + nextStepX] === '#') {
+      // firstLoop = false;
+      if (nextStepY === -1) {
+        nextStepX = 1;
+        nextStepY = 0;
+      } else if (nextStepX === 1) {
+        nextStepY = 1;
+        nextStepX = 0;
+      } else if (nextStepY === 1) {
+        nextStepX = -1;
+        nextStepY = 0;
+      } else if (nextStepX === -1) {
+        nextStepY = -1;
+        nextStepX = 0;
+      }
+    }
+
+    if (currentX === originalX && currentY === originalY) {
+      currentX = originalX;
+      currentY = originalY;
+      nextStepY = originalNextStepY;
+      nextStepX = originalNextStepX;
+      return true;
+    }
+
+    // if (blockedVisited.has(`${currentX},${currentY}`)) {
+    //   currentX = originalX;
+    //   currentY = originalY;
+    //   nextStepY = originalNextStepY;
+    //   nextStepX = originalNextStepX;
+    //   return true;
+    // }
+
+    currentY += nextStepY;
+    currentX += nextStepX;
+    // blockedVisited.set(`${currentX},${currentY}`, true);
   }
+  
+  currentX = originalX;
+  currentY = originalY;
+  nextStepY = originalNextStepY;
+  nextStepX = originalNextStepX;
+  return false;
 }
 
 while (
@@ -52,10 +97,6 @@ while (
   currentY + nextStepY >= 0 &&
   currentY + nextStepY < grid.length
 ) {
-  const right = getRightOfCurrent();
-  if (grid[currentY - nextStepY][currentX - nextStepX] === 'X' && right === 'X') {
-    blockingPositions++;
-  }
   while (grid[currentY + nextStepY][currentX + nextStepX] === '#') {
     if (nextStepY === -1) {
       nextStepX = 1;
@@ -71,12 +112,14 @@ while (
       nextStepX = 0;
     }
   }
+  if (wouldWeLoopIfWePutUpABlock(currentX, currentY)) {
+    blockingPositions++;
+  }
   currentY += nextStepY;
   currentX += nextStepX;
   // Take step
   grid[currentY][currentX] = 'X';
   visited.set(`${currentX},${currentY}`, true);
-
 }
 printGrid(grid);
 
