@@ -1,0 +1,58 @@
+{
+  "name": "part14",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "part14/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/part14",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "part14/src/main.ts",
+        "tsConfig": "part14/tsconfig.app.json",
+        "assets": ["part14/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "part14:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "part14:build:development"
+        },
+        "production": {
+          "buildTarget": "part14:build:production"
+        }
+      }
+    }
+  }
+}
