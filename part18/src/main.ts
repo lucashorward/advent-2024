@@ -38,7 +38,6 @@ for (const line of lines) {
     const lastIndexOfFile = blocks.lastIndexOf(blocks[i]);
     const filesize = lastIndexOfFile - blocks.indexOf(blocks[i]) + 1;
     const firstIndexOfFile = blocks.indexOf(blocks[i]);
-    // console.log(firstIndexOfFile, filesize)
     for (let j = 0; j < blocks.length; j++) {
       if (j > firstIndexOfFile) {
         continue;
@@ -62,13 +61,6 @@ for (const line of lines) {
         }
       }
     }
-    // const indexOfFirstDot = blocks.indexOf('.');
-    // if (indexOfFirstDot === -1 || indexOfFirstDot > i) {
-    //   break;
-    // }
-    // blocks[indexOfFirstDot] = blocks[i];
-    // blocks[i] = '.';
-    // console.log(blocks.join(''));
   }
 
   // Calculate checksum
