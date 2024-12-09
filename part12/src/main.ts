@@ -27,7 +27,6 @@ function printGrid(grid: string[][]) {
 let blockingPositions = 0;
 
 function wouldWeLoopIfWePutUpABlock(originalX: number, originalY: number) {
-  // console.log('Checking', originalX, originalY);
   let nextStepX = 0;
   let nextStepY = -1;
   let currentX = initialPosition.x;
