@@ -1,0 +1,58 @@
+{
+  "name": "part24",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "part24/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/part24",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "part24/src/main.ts",
+        "tsConfig": "part24/tsconfig.app.json",
+        "assets": ["part24/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "part24:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "part24:build:development"
+        },
+        "production": {
+          "buildTarget": "part24:build:production"
+        }
+      }
+    }
+  }
+}
