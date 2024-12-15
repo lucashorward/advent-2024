@@ -1,0 +1,58 @@
+{
+  "name": "part29",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "part29/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/part29",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "part29/src/main.ts",
+        "tsConfig": "part29/tsconfig.app.json",
+        "assets": ["part29/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "part29:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "part29:build:development"
+        },
+        "production": {
+          "buildTarget": "part29:build:production"
+        }
+      }
+    }
+  }
+}
