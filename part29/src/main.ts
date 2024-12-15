@@ -73,7 +73,6 @@ let robotPosition = { x: 0, y: 0 };
 
 for (let outer = 0; outer < lines.length; outer++) {
   const line = lines[outer];
-  // TODO code goes here
   if (line === '') {
     continue;
   }
